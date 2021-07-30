@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: .
+    command: ${COMMAND:-tail -f /dev/null}
+    volumes:
+      - .:/app
+  db:
+    image: postgres:13.3
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_PASSWORD: mdzpwd
+      POSTGRES_USER: mdz
+volumes:
+  db_data:
