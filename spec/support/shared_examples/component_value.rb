@@ -1,6 +1,8 @@
 # Проверяет, что `value_object` ведёт себя как объект-значение компонента.
 # Не проверяет работу непосредственно аксессора хранения значения (value).
 #
+# При установке параметра `container` в true не запускаются тесты, специфичные для компонентов с единичным значением.
+#
 # @example
 #
 #   describe SomeValue do
@@ -9,7 +11,7 @@
 #     end
 #   end
 #
-shared_examples_for 'component value' do
+shared_examples_for 'component value' do |container: false|
   describe '#component' do
     subject(:component) { value_object.component }
     let!(:parent_component) { create :component, value: value_object }
@@ -26,7 +28,7 @@ shared_examples_for 'component value' do
       it 'is valid' do
         expect(subject).to be_valid
       end
-    end
+    end unless container
 
   end
 end
