@@ -4,6 +4,8 @@ services:
     build:
       context: .
     command: ${COMMAND:-tail -f /dev/null}
+    depends_on:
+      - db
     volumes:
       - .:/app
   db:
