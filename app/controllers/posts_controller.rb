@@ -1,5 +1,4 @@
 class PostsController < ApplicationController
-
   # Создаёт и возвращает новую публикацию
   #
   # @example {include:file:../http/posts/create.http}
