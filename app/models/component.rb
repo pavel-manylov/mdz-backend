@@ -56,15 +56,4 @@ class Component < ApplicationRecord
   before_validation do
     self.display_class = nil if self.display_class.blank?
   end
-
-  # Является ли компонент черновиком
-  # Компонент — черновик в ситуации, когда у него нет постоянного сохранённого значения (`value.value`)
-  #
-  # В ситуации, когда у компонента имеется черновое значение (`value.draft_value`) одновременно с постоянным (`value.value`)
-  # компонент черновиком не является.
-  #
-  # @return [TrueClass, FalseClass]
-  def draft?
-    value.try(:value).nil?
-  end
 end

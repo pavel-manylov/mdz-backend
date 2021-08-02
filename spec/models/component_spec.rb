@@ -54,32 +54,6 @@ RSpec.describe Component, type: :model do
     end
   end
 
-  describe '#draft?' do
-    context 'with a (permanent) value' do
-      before { subject.value.value = true }
-
-      it 'returns false' do
-        expect(subject).not_to be_draft
-      end
-    end
-
-    context 'without a (permanent) value' do
-      before { subject.value.value = nil }
-      it 'returns true' do
-        expect(subject).to be_draft
-      end
-    end
-
-    context 'without associated value' do
-      # в таком случае компонент так же невалиден (см. другие тесты)
-      before { subject.value = nil }
-
-      it 'returns true' do
-        expect(subject).to be_draft
-      end
-    end
-  end
-
   describe 'Validation' do
     context 'with empty #public' do
       before { subject.public = nil }

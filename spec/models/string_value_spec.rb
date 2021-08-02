@@ -14,12 +14,4 @@ RSpec.describe StringValue, type: :model do
       it_behaves_like 'stored accessor', :value, 'long text value' * 100
     end
   end
-
-  describe '#draft_value[=]' do
-    it_behaves_like 'stored accessor', :draft_value, 'test string value'
-
-    context 'with long text values' do
-      it_behaves_like 'stored accessor', :draft_value, 'long text value' * 100
-    end
-  end
 end

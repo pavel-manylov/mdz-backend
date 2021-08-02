@@ -1,16 +1,18 @@
 # Пост (публикация), состоящая из связанных компонентов
 class Post < ApplicationRecord
+  # @!attribute components
+  #   Компоненты данной публикации.
+  #   При удалении публикации автоматически удаляются все связанные компоненты
+  #
+  #   @return [ActiveRecord::Relation<Component>]
+
+  has_many :components, dependent: :destroy
+
   # @!attribute name
   #   Внутреннее название поста
   #
   #   @validation обязателен для заполнения
   #   @return [String]
-
-  # @!attribute draft
-  #   Является ли пост черновиком
-  #
-  #   @validation обязателен для заполнения
-  #   @return [Boolean]
 
   # @!attribute seo_url
   #   Человекочитаемый URL (часть URL)
@@ -20,5 +22,4 @@ class Post < ApplicationRecord
   #   @return [String]
 
   validates_presence_of :name
-  validates_inclusion_of :draft, in: [true, false]
 end

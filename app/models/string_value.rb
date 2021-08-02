@@ -6,9 +6,4 @@ class StringValue < ApplicationRecord
   #   Постоянное строковое значение компонента. Поддерживаются длинные тексты.
   #
   #   @return [String]
-
-  # @!attribute draft_value
-  #   Черновое строковое значение компонента. Поддерживаются длинные тексты.
-  #
-  #   @return [String]
 end
