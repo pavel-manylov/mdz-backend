@@ -15,6 +15,10 @@ RSpec.describe PostSerializer, type: :serializer do
     end
 
     context 'returned Hash' do
+      example '["id"] equals post id' do
+        expect(serialized['id']).to eql post.id
+      end
+
       example '["name"] equals post name' do
         expect(serialized['name']).to eql post_name
       end

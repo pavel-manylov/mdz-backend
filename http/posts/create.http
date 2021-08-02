@@ -1,0 +1,9 @@
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+  "name": "Someone Won Elections in USA",
+  "seo_url": "someone-Won"
+}
+
+###

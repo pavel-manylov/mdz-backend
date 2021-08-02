@@ -6,7 +6,7 @@ class PostSerializer
     # @param  [Post]  post
     # @return [Hash]
     def serialize(post)
-      post.as_json only: %w(name seo_url)
+      post.as_json only: %w(id name seo_url)
     end
   end
 end
