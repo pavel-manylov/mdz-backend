@@ -1,0 +1,62 @@
+openapi: 3.0.1
+info:
+  title: Тестовый проект Медузы — API
+  version: 1.0.0
+servers:
+  - url: http://mac.mini:3000/
+    description: "Pavel Manylov development server"
+  - url: http://localhost:3000
+    description: "localhost Server"
+tags:
+  - name: posts
+    description: Публикации
+paths:
+  /posts:
+    post:
+      tags:
+        - posts
+      summary: Создать новую публикацию
+      operationId: createPost
+      requestBody:
+        description: Публикация, которую необходимо добавить
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPost'
+        required: true
+      responses:
+        200:
+          description: Созданная публикация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        422:
+          description: Невалидные данные
+          content: {}
+        500:
+          description: Внутренние ошибки
+          content: {}
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    NewPost:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Внутреннее название публикации
+        seo_url:
+          type: string
+          description: Человекочитаемый URL
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Внутреннее название публикации
+        seo_url:
+          type: string
+          description: Человекочитаемый URL

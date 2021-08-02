@@ -39,6 +39,9 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_interaction (4.0.5)
+      activemodel (>= 5, < 7)
+      activesupport (>= 5, < 7)
     activejob (6.1.4)
       activesupport (= 6.1.4)
       globalid (>= 0.3.6)
@@ -103,6 +106,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.1.4)
@@ -175,12 +180,14 @@ PLATFORMS
   aarch64-linux
 
 DEPENDENCIES
+  active_interaction (~> 4.0)
   bootsnap (>= 1.4.4)
   byebug
   debase (~> 0.2)
   factory_bot_rails (~> 6.2.0)
   listen (~> 3.3)
   puma (~> 5.0)
+  rack-cors
   rails (~> 6.1.4)
   rspec-rails (~> 5.0.1)
   ruby-debug-ide (~> 0.7)

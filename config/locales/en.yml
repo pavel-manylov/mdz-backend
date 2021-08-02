@@ -34,4 +34,8 @@ en:
     errors:
       messages:
         unsupported_class: "has unsupported class"
+  controller:
+    errors:
+      interaction_error: "Internal interaction error"
+      exception: "Internal error"
 

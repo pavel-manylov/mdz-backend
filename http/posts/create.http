@@ -1,0 +1,18 @@
+### Создание публикации
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+  "name": "Someone Won Elections in USA",
+  "seo_url": "someone-Won"
+}
+
+### Создание публикации (невалидные данные — отсутствует `name`)
+
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+  "name": "",
+  "seo_url": "someone-Won"
+}
