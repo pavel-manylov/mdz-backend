@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_31_134432) do
+ActiveRecord::Schema.define(version: 2021_08_02_072218) do
 
   create_table "boolean_values", force: :cascade do |t|
     t.boolean "value", default: false, null: false
-    t.boolean "draft_value"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -32,9 +31,17 @@ ActiveRecord::Schema.define(version: 2021_07_31_134432) do
     t.index ["value_type", "value_id"], name: "index_components_on_value"
   end
 
+  create_table "custom_fields", force: :cascade do |t|
+    t.integer "component_id"
+    t.string "name", null: false
+    t.string "value", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["component_id"], name: "index_custom_fields_on_component_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "name", null: false
-    t.boolean "draft", default: true, null: false
     t.string "seo_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -50,7 +57,6 @@ ActiveRecord::Schema.define(version: 2021_07_31_134432) do
   end
 
   create_table "relation_values", force: :cascade do |t|
-    t.boolean "has_draft_value", default: false, null: false
     t.boolean "has_value", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -58,7 +64,6 @@ ActiveRecord::Schema.define(version: 2021_07_31_134432) do
 
   create_table "string_values", force: :cascade do |t|
     t.text "value", default: "f", null: false
-    t.text "draft_value"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

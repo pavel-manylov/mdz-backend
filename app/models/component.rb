@@ -1,3 +1,4 @@
+# Компонент публикации
 class Component < ApplicationRecord
   # @!attribute post
   #   Пост (публикация), к которой относится данный компонент
@@ -26,6 +27,12 @@ class Component < ApplicationRecord
     next if record.nil?
     record.errors.add(:value, :unsupported_class) unless record.value.class.in?(ALLOWED_VALUE_CLASSES)
   end
+
+  # @!attribute custom_fields
+  #   Настраиваемые (кастомные) поля компонента
+  #
+  #   @return [ActiveRecord::Relation<CustomField>]
+  has_many :custom_fields
 
   # @!attribute public
   #   Является ли компонент публичным (должны ли предоставляться сведения о данном компоненте в публичных API )

@@ -12,21 +12,21 @@ RSpec.describe Component, type: :model do
   end
 
   example '#public? returns the same value as #public' do
-    subject.public = true
-    expect(subject.public).to be true
+    component.public = true
+    expect(component.public).to be true
 
-    subject.public = false
-    expect(subject.public).to be false
+    component.public = false
+    expect(component.public).to be false
   end
 
   describe '#display_class[=]' do
     it_behaves_like 'stored accessor', :display_class, 'headline'
 
     it 'resets empty value to nil' do
-      subject.display_class = '   '
-      subject.save
+      component.display_class = '   '
+      component.save
 
-      expect(subject.display_class).to be_nil
+      expect(component.display_class).to be_nil
     end
   end
 
@@ -44,49 +44,54 @@ RSpec.describe Component, type: :model do
     end
   end
 
+  example '#custom_fields returns all associated CustomField(s)' do
+    created_fields = 3.times.map{ create :custom_field, component: component }
+    expect(component.custom_fields).to match_array created_fields
+  end
+
   describe '#destroy' do
     it 'destroys associated value' do
-      value = subject.value
+      value = component.value
       expect(value).not_to be_nil # foolproof check
 
-      subject.destroy!
+      component.destroy!
       expect { value.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
   describe 'Validation' do
     context 'with empty #public' do
-      before { subject.public = nil }
+      before { component.public = nil }
       it_behaves_like 'invalid', :public
     end
 
     context 'without #order' do
-      before { subject.order = nil }
+      before { component.order = nil }
       it_behaves_like 'invalid', :order
     end
 
     context 'with negative #order' do
-      before { subject.order = -5 }
+      before { component.order = -5 }
       it_behaves_like 'invalid', :order
     end
 
     context 'with floating point #order' do
-      before { subject.order = 5.55 }
+      before { component.order = 5.55 }
       it_behaves_like 'invalid', :order
     end
 
     context 'without #post' do
-      before { subject.post = nil }
+      before { component.post = nil }
       it_behaves_like 'invalid', :post
     end
 
     context 'without #value' do
-      before { subject.value = nil }
+      before { component.value = nil }
       it_behaves_like 'invalid', :value
     end
 
     context 'with unsupported value class' do
-      before { subject.value = create(:post) }
+      before { component.value = create(:post) }
       it_behaves_like 'invalid', :value
     end
   end
