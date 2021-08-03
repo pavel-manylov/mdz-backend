@@ -96,6 +96,14 @@ RSpec.describe ComponentsController, type: :controller do
       allow(ComponentSerializer).to receive(:serialize).with(components_double).and_return serialized_components
     end
 
+    it 'searches for related components' do
+      index
+
+      expect(IndexComponents).to have_received(:run!).with(
+        post_id: post_id.to_s
+      )
+    end
+
     it 'returns serialized components' do
       index
       expect(JSON.parse(response.body)).to eq serialized_components
@@ -110,4 +118,109 @@ RSpec.describe ComponentsController, type: :controller do
       subject(:perform) { index }
     end
   end
+
+  describe 'PUT posts/:post_id/components/:id' do
+    subject(:update) { put :update, params: params }
+    let(:params) do
+      {
+        post_id: post_id,
+        id: component_id,
+        public: component_public,
+        display_class: component_display_class,
+        order: component_order,
+        custom_fields: component_custom_fields,
+        type: component_type,
+        value: component_value
+      }
+    end
+
+    let(:post_id) { 123 }
+    let(:component_id) { 222 }
+    let(:component_public) { true }
+    let(:component_display_class) { 'caption' }
+    let(:component_order) { 33 }
+    let(:component_custom_fields) do
+      { 'as-preview' => 'no' }
+    end
+    let(:component_type) { 'boolean' }
+    let(:component_value) { true }
+
+    let(:serialized_component) do
+      {
+        'id' => component_id,
+        'display_class' => component_display_class
+      }
+    end
+
+    let(:component_double) { double Component, id: component_id }
+
+    before do
+      allow(UpdateComponent).to receive(:run!).and_return component_double
+      allow(ComponentSerializer).to receive(:serialize).with(component_double).and_return serialized_component
+    end
+
+    it 'updates component' do
+      update
+
+      expect(UpdateComponent).to have_received(:run!).with(
+        'post_id' => post_id.to_s,
+        'component_id' => component_id.to_s,
+        'public' => 'true',
+        'display_class' => component_display_class,
+        'order' => component_order.to_s,
+        'custom_fields' => component_custom_fields,
+        'type' => component_type,
+        'value' => 'true'
+      )
+    end
+
+    it 'returns serialized component' do
+      update
+      expect(JSON.parse(response.body)).to eq serialized_component
+    end
+
+    it 'returns success status' do
+      update
+      expect(response).to be_successful
+    end
+
+    include_examples 'controller interaction errors', interaction_class: UpdateComponent do
+      subject(:perform) { update }
+    end
+
+  end
+
+  describe 'DELETE posts/:post_id/components/:id' do
+    subject(:destroy) { delete :destroy, params: params }
+    let(:params) do
+      {
+        post_id: post_id,
+        id: component_id
+      }
+    end
+
+    let(:post_id) { 123 }
+    let(:component_id) { 222 }
+
+    before do
+      allow(DeleteComponent).to receive(:run!).and_return true
+    end
+
+    it 'deletes component' do
+      destroy
+
+      expect(DeleteComponent).to have_received(:run!).with component_id: component_id.to_s
+    end
+
+    it 'returns success status' do
+      destroy
+      expect(response).to be_successful
+    end
+
+    include_examples 'controller interaction errors', interaction_class: DeleteComponent do
+      subject(:perform) { destroy }
+    end
+
+  end
+
 end

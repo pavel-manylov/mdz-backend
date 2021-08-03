@@ -130,6 +130,75 @@ paths:
           description: Внутренние ошибки
           content: { }
       x-codegen-request-body-name: body
+  /posts/{post_id}/components/{component_id}:
+    put:
+      tags:
+        - components
+      summary: Обновить компонент
+      operationId: updateComponent
+      requestBody:
+        description: Актуальные сведения о компоненте
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Component'
+        required: true
+      parameters:
+        - name: post_id
+          in: path
+          description: Идентификатор публикации
+          required: true
+          schema:
+            type: integer
+        - name: component_id
+          in: path
+          description: Идентификатор компонента
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Обновлённый компонент
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Component'
+        422:
+          description: Невалидные данные
+          content: { }
+        500:
+          description: Внутренние ошибки
+          content: { }
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+        - components
+      summary: Удалить компонент
+      operationId: deleteComponent
+      parameters:
+        - name: post_id
+          in: path
+          description: Идентификатор публикации
+          required: true
+          schema:
+            type: integer
+        - name: component_id
+          in: path
+          description: Идентификатор компонента
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Удаление завершено успешно
+          content: { }
+        422:
+          description: Невалидные данные
+          content: { }
+        500:
+          description: Внутренние ошибки
+          content: { }
+      x-codegen-request-body-name: body
 components:
   schemas:
     NewPost:
@@ -193,6 +262,9 @@ components:
         id:
           type: integer
           description: Идентификатор компонента
+        post_id:
+          type: integer
+          description: Идентификатор публикации
         public:
           type: boolean
           description: Является ли компонент публичным
