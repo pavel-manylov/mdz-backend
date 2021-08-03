@@ -40,6 +40,34 @@ paths:
           description: Внутренние ошибки
           content: { }
       x-codegen-request-body-name: body
+
+  /posts/{post_id}:
+    get:
+      tags:
+        - posts
+      summary: Получить публикацию по идентификатору
+      operationId: getPost
+      parameters:
+        - name: post_id
+          in: path
+          description: Идентификатор публикации
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Запрошенная публикация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        422:
+          description: Невалидные данные
+          content: { }
+        500:
+          description: Внутренние ошибки
+          content: { }
+      x-codegen-request-body-name: body
   /posts/{post_id}/components:
     post:
       tags:

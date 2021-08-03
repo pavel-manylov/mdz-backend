@@ -1,3 +1,10 @@
+# Проверяет корректность обработки ошибок сервисных классов в контроллере
+#
+# @example
+#
+#   include_examples 'controller interaction errors', interaction_class: CreatePost do
+#     subject(:perform){ post :create }
+#   end
 shared_examples_for 'controller interaction errors' do |interaction_class: nil|
   context 'with interaction validation errors' do
     before do
@@ -12,7 +19,7 @@ shared_examples_for 'controller interaction errors' do |interaction_class: nil|
 
     let(:readable_errors) { ['Name is required'] }
 
-    before{ create }
+    before{ perform }
 
     it 'returns status code 422' do
       expect(response.status).to eq 422
@@ -28,7 +35,7 @@ shared_examples_for 'controller interaction errors' do |interaction_class: nil|
       allow(interaction_class).to receive(:run!).and_raise(ActiveInteraction::Error)
     end
 
-    before{ create }
+    before{ perform }
 
     it 'returns status code 500' do
       expect(response.status).to eq 500
@@ -44,7 +51,7 @@ shared_examples_for 'controller interaction errors' do |interaction_class: nil|
       allow(interaction_class).to receive(:run!).and_raise(StandardError)
     end
 
-    before{ create }
+    before{ perform }
 
     it 'returns status code 500' do
       expect(response.status).to eq 500
