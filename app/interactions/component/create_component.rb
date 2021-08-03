@@ -45,6 +45,12 @@ class CreateComponent < ActiveInteraction::Base
 
   validates_inclusion_of :type, in: %w(boolean string relation)
 
+  # @!attribute display_class
+  #   Класс для отображения на клиентской стороне
+  #
+  #   @return [String]
+  string :display_class, default: nil
+
   # @!attribute value
   #   Значение компонента
   #
@@ -72,6 +78,7 @@ class CreateComponent < ActiveInteraction::Base
     component = Component.create post: compose(GetPost, post_id: post_id),
                                  order: order,
                                  public: public,
+                                 display_class: display_class,
                                  value: compose(TYPE_TO_CAST_CLASS[type], value: value),
                                  custom_fields: build_custom_fields
     errors.merge! component.errors

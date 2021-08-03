@@ -63,4 +63,11 @@ class Component < ApplicationRecord
   before_validation do
     self.display_class = nil if self.display_class.blank?
   end
+
+  # Конечное значение данного компонента
+  #
+  # @return [NilClass, TrueClass, FalseClass, String, ActiveRecord::Relation<Post>]
+  def representative_value
+    value.value
+  end
 end

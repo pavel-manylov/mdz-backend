@@ -10,10 +10,12 @@ RSpec.describe CreateComponent, type: :interaction do
       value: new_component_value,
       order: new_component_order,
       post_id: new_component_post_id,
+      display_class: new_component_display_class,
       custom_fields: new_component_custom_fields
     }
   end
 
+  let(:new_component_display_class){ 'heading1' }
   let(:new_component_custom_fields) do
     {
       'mobile-class' => 'xLarge',
@@ -52,6 +54,10 @@ RSpec.describe CreateComponent, type: :interaction do
 
       it 'has passed #order' do
         expect(created_component.order).to eq new_component_order
+      end
+
+      it 'has passed #display_class' do
+        expect(created_component.display_class).to eq new_component_display_class
       end
 
       context 'representative value' do
