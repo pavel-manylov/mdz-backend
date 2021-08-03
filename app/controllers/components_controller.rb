@@ -3,7 +3,7 @@ class ComponentsController < ApplicationController
   #
   # @example {include:file:../http/components/index.http}
   def index
-    components = IndexComponents.run! params.permit(:post_id)
+    components = IndexComponents.run! params.permit(:post_id).to_h
     render json: ComponentSerializer.serialize(components)
   end
 
@@ -25,6 +25,14 @@ class ComponentsController < ApplicationController
     component = UpdateComponent.run! update_params
 
     render json: ComponentSerializer.serialize(component)
+  end
+
+  # Удаляет указанный компонент
+  #
+  # @example {include:file:../http/components/delete.http}
+  def destroy
+    DeleteComponent.run! component_id: params[:id]
+    render json: {}
   end
 
   private

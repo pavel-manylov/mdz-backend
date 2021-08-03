@@ -96,6 +96,14 @@ RSpec.describe ComponentsController, type: :controller do
       allow(ComponentSerializer).to receive(:serialize).with(components_double).and_return serialized_components
     end
 
+    it 'searches for related components' do
+      index
+
+      expect(IndexComponents).to have_received(:run!).with(
+        post_id: post_id.to_s
+      )
+    end
+
     it 'returns serialized components' do
       index
       expect(JSON.parse(response.body)).to eq serialized_components
@@ -181,4 +189,38 @@ RSpec.describe ComponentsController, type: :controller do
     end
 
   end
+
+  describe 'DELETE posts/:post_id/components/:id' do
+    subject(:destroy) { delete :destroy, params: params }
+    let(:params) do
+      {
+        post_id: post_id,
+        id: component_id
+      }
+    end
+
+    let(:post_id) { 123 }
+    let(:component_id) { 222 }
+
+    before do
+      allow(DeleteComponent).to receive(:run!).and_return true
+    end
+
+    it 'deletes component' do
+      destroy
+
+      expect(DeleteComponent).to have_received(:run!).with component_id: component_id.to_s
+    end
+
+    it 'returns success status' do
+      destroy
+      expect(response).to be_successful
+    end
+
+    include_examples 'controller interaction errors', interaction_class: DeleteComponent do
+      subject(:perform) { destroy }
+    end
+
+  end
+
 end
