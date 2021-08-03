@@ -30,5 +30,25 @@ RSpec.describe CustomField, type: :model do
       before { subject.value = nil }
       it_behaves_like 'invalid', :value
     end
+
+    context 'with duplicating name for the same component' do
+      before do
+        create :custom_field, component: custom_field.component, name: 'help'
+        subject.name = 'help'
+      end
+
+      it_behaves_like 'invalid', :name
+    end
+
+    context 'with duplicating name across other components' do
+      before do
+        create :custom_field, name: 'help'
+        subject.name = 'help'
+      end
+
+      it 'is valid' do
+        expect(subject).to be_valid
+      end
+    end
   end
 end

@@ -38,4 +38,8 @@ en:
     errors:
       interaction_error: "Internal interaction error"
       exception: "Internal error"
+  interaction:
+    errors:
+      reference_id_to_post_is_required: "Reference ID to Post is required"
+      post_not_found: "Post not found"
 
