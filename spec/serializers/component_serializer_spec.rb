@@ -29,38 +29,38 @@ RSpec.describe ComponentSerializer, type: :serializer do
       expect(serialized).to be_a Hash
     end
 
-    context 'returned Hash' do
+    shared_examples_for 'hash internals' do
       example '["id"] equals component id' do
-        expect(serialized['id']).to eql component.id
+        expect(serialized_item['id']).to eql component.id
       end
 
       example '["display_class"] equals component display class' do
-        expect(serialized['display_class']).to eql component_display_class
+        expect(serialized_item['display_class']).to eql component_display_class
       end
 
       example '["order"] equals component order' do
-        expect(serialized['order']).to eql component_order
+        expect(serialized_item['order']).to eql component_order
       end
 
       example '["public"] equals component public flag' do
-        expect(serialized['public']).to be component_public
+        expect(serialized_item['public']).to be component_public
       end
 
       example '["post_id"] equals associated post id' do
-        expect(serialized['post_id']).to eql component_post.id
+        expect(serialized_item['post_id']).to eql component_post.id
       end
 
       example '["custom_fields"] is a hash-representation of custom fields' do
-        expect(serialized['custom_fields']).to eq({ 'hide-on-mobile' => 'yes' })
+        expect(serialized_item['custom_fields']).to eq({ 'hide-on-mobile' => 'yes' })
       end
 
       context 'with BooleanValue' do
         example '["type"] equals "boolean"' do
-          expect(serialized['type']).to eql 'boolean'
+          expect(serialized_item['type']).to eql 'boolean'
         end
 
         example '["value"] equals boolean value' do
-          expect(serialized['value']).to be true
+          expect(serialized_item['value']).to be true
         end
       end
 
@@ -69,11 +69,11 @@ RSpec.describe ComponentSerializer, type: :serializer do
         let(:component_string_value) { 'that is a value' }
 
         example '["type"] equals "string"' do
-          expect(serialized['type']).to eql 'string'
+          expect(serialized_item['type']).to eql 'string'
         end
 
         example '["value"] equals string value' do
-          expect(serialized['value']).to eql component_string_value
+          expect(serialized_item['value']).to eql component_string_value
         end
       end
 
@@ -83,17 +83,41 @@ RSpec.describe ComponentSerializer, type: :serializer do
         let(:second_post) { create :post }
 
         example '["type"] equals "relation"' do
-          expect(serialized['type']).to eql 'relation'
+          expect(serialized_item['type']).to eql 'relation'
         end
 
         example '["value"] is an array of hashes with posts references' do
-          expect(serialized['value']).to eq([
+          expect(serialized_item['value']).to eq([
                                               { 'post_id' => first_post.id },
                                               { 'post_id' => second_post.id }
                                             ])
         end
       end
+    end
 
+    context 'returned Hash' do
+      it_behaves_like 'hash internals' do
+        subject(:serialized_item){ serialized }
+      end
+    end
+
+    context 'with an Array of Component(s)' do
+      subject(:serialized) { described_class.serialize [create(:component), component] }
+
+      it 'returns an Array of Hash(es)' do
+        expect(serialized).to be_an Array
+        expect(serialized[0]).to be_a Hash
+      end
+
+      it 'has an item for each Component' do
+        expect(serialized.size).to eql 2
+      end
+
+      context 'each Hash' do
+        it_behaves_like 'hash internals' do
+          subject(:serialized_item){ serialized[1] }
+        end
+      end
     end
   end
 end

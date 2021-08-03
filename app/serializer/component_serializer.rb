@@ -1,7 +1,7 @@
 # Сериализатор компонента
 class ComponentSerializer
   class << self
-    # Сериализует компонент
+    # Сериализует компонент(ы)
     # Ключи в сериализованном значении:
     #
     #   - id      — идентификатор
@@ -13,17 +13,21 @@ class ComponentSerializer
     #   - type — тип значения ("string", "boolean", "relation")
     #   - value — значение (String, TrueClass|FalseClass, Array<Hash{"post_id" => Integer}>)
     #
-    # @param  [Component]  component
-    # @return [Hash]
+    # @param  [Component, Array<Component>]  component
+    # @return [Hash, Array<Hash>]
     def serialize(component)
+      return component.map{|c| serialize_component c } if component.is_a?(Array)
+      serialize_component component
+    end
+
+    private
+
+    def serialize_component(component)
       result = component.as_json only: %w(id public display_class order post_id)
       result['custom_fields'] = custom_fields(component)
       result['type'], result['value'] = type_and_value(component)
       result
     end
-
-    private
-
     # Сериализация настраиваемых полей в словарь
     #
     # @return [Hash]
