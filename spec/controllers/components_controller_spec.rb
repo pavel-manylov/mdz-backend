@@ -69,6 +69,8 @@ RSpec.describe ComponentsController, type: :controller do
       expect(response).to be_successful
     end
 
-    include_examples 'controller interaction errors', interaction_class: CreateComponent
+    include_examples 'controller interaction errors', interaction_class: CreateComponent do
+      subject(:perform){ create }
+    end
   end
 end

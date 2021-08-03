@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe PostsController, type: :controller do
-  describe "CREATE post" do
+  describe "POST /posts" do
     subject(:create) { post :create, params: params }
 
     let(:params) do
@@ -40,7 +40,40 @@ RSpec.describe PostsController, type: :controller do
       expect(response).to be_successful
     end
 
-
-    include_examples 'controller interaction errors', interaction_class: CreatePost
+    include_examples 'controller interaction errors', interaction_class: CreatePost do
+      subject(:perform){ create }
+    end
   end
+
+  describe "GET /posts/:id" do
+    subject(:get_request) { get :show, params: { id: post_id } }
+    let(:post_id) { 123 }
+
+    let(:post_double) { double Post, id: post_id }
+    let(:serialized_post) do
+      {
+        'id' => post_id
+      }
+    end
+
+    before do
+      allow(GetPost).to receive(:run!).and_return post_double
+      allow(PostSerializer).to receive(:serialize).with(post_double).and_return serialized_post
+    end
+
+    it 'returns serialized post' do
+      get_request
+      expect(JSON.parse(response.body)).to eq serialized_post
+    end
+
+    it 'returns success status' do
+      get_request
+      expect(response).to be_successful
+    end
+
+    include_examples 'controller interaction errors', interaction_class: GetPost do
+      subject(:perform) { get_request }
+    end
+  end
+
 end
