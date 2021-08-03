@@ -52,7 +52,26 @@ RSpec.describe Component, type: :model do
 
   example '#custom_fields returns all associated CustomField(s)' do
     created_fields = create_list :custom_field, 3, component: component
-    expect(component.custom_fields).to match_array created_fields
+    expect(component.reload.custom_fields).to match_array created_fields
+  end
+
+  context '#custom_field_attributes=' do
+    it 'sets custom fields' do
+      component.custom_fields_attributes = [{ 'name' => 'hey', 'value' => 'there' }]
+      component.save!
+
+      expect(component.reload.custom_fields).to match_array [have_attributes(name: 'hey', value: 'there')]
+    end
+
+    it 'destroys marked custom fields' do
+      custom_field = create :custom_field, component: component
+      component.reload
+
+      component.custom_fields_attributes = [{ 'id' => custom_field.id, '_destroy' => '1' }]
+      component.save!
+
+      expect { custom_field.reload }.to raise_error ActiveRecord::RecordNotFound
+    end
   end
 
   describe '#destroy' do
@@ -99,6 +118,11 @@ RSpec.describe Component, type: :model do
     context 'with unsupported value class' do
       before { component.value = create(:post) }
       it_behaves_like 'invalid', :value
+    end
+
+    context 'with invalid custom fields' do
+      before { component.custom_fields_attributes = [{ 'name' => 'key', 'value' => '' }] }
+      it_behaves_like 'invalid', :custom_fields
     end
   end
 end

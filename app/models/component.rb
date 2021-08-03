@@ -60,6 +60,9 @@ class Component < ApplicationRecord
   validates_inclusion_of :public, in: [true, false]
   validates_numericality_of :order, greater_than_or_equal_to: 0, only_integer: true
 
+  validates_associated :custom_fields
+  accepts_nested_attributes_for :custom_fields, allow_destroy: true
+
   before_validation do
     self.display_class = nil if self.display_class.blank?
   end
