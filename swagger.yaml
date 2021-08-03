@@ -69,6 +69,34 @@ paths:
           content: { }
       x-codegen-request-body-name: body
   /posts/{post_id}/components:
+    get:
+      tags:
+        - components
+      summary: Получить все компоненты данной публикации
+      operationId: indexComponents
+      parameters:
+        - name: post_id
+          in: path
+          description: Идентификатор публикации
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Список компонентов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Component'
+        422:
+          description: Невалидные данные
+          content: { }
+        500:
+          description: Внутренние ошибки
+          content: { }
+      x-codegen-request-body-name: body
     post:
       tags:
         - components
