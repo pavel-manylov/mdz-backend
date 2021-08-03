@@ -10,6 +10,8 @@ servers:
 tags:
   - name: posts
     description: Публикации
+  - name: components
+    description: Компоненты
 paths:
   /posts:
     post:
@@ -33,10 +35,44 @@ paths:
                 $ref: '#/components/schemas/Post'
         422:
           description: Невалидные данные
-          content: {}
+          content: { }
         500:
           description: Внутренние ошибки
-          content: {}
+          content: { }
+      x-codegen-request-body-name: body
+  /posts/{post_id}/components:
+    post:
+      tags:
+        - components
+      summary: Создать новый компонент в публикации
+      operationId: createComponent
+      requestBody:
+        description: Компонент, который необходимо добавить
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComponent'
+        required: true
+      parameters:
+        - name: post_id
+          in: path
+          description: Идентификатор публикации
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Созданный компонент
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Component'
+        422:
+          description: Невалидные данные
+          content: { }
+        500:
+          description: Внутренние ошибки
+          content: { }
       x-codegen-request-body-name: body
 components:
   schemas:
@@ -60,3 +96,71 @@ components:
         seo_url:
           type: string
           description: Человекочитаемый URL
+    PostReference:
+      type: object
+      properties:
+        post_id:
+          type: integer
+          description: Идентификатор публикации
+    NewComponent:
+      type: object
+      properties:
+        public:
+          type: boolean
+          description: Является ли компонент публичным
+        type:
+          type: string
+          enum: [ string, boolean, relation ]
+          description: Тип значения компонента (строка, булево, вложения)
+        value:
+          oneOf:
+            - type: string
+            - type: boolean
+            - type: array
+              items:
+                $ref: '#/components/schemas/PostReference'
+          description: Значение компонента
+        order:
+          type: integer
+          description: Порядковый номер компонента в публикации (0=первый)
+        display_class:
+          type: string
+          description: Класс для отображения на клиентской стороне
+        custom_fields:
+          type: object
+          additionalProperties:
+            type: string
+          description: Настраиваемые поля (словарь)
+    Component:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Идентификатор компонента
+        public:
+          type: boolean
+          description: Является ли компонент публичным
+        type:
+          type: string
+          enum: [ string, boolean, relation ]
+          description: Тип значения компонента (строка, булево, вложения)
+        value:
+          oneOf:
+            - type: string
+            - type: boolean
+            - type: array
+              items:
+                $ref: '#/components/schemas/PostReference'
+          description: Значение компонента
+        order:
+          type: integer
+          description: Порядковый номер компонента в публикации (0=первый)
+        display_class:
+          type: string
+          description: Класс для отображения на клиентской стороне
+        custom_fields:
+          type: object
+          additionalProperties:
+            type: string
+          description: Настраиваемые поля (словарь)
+
