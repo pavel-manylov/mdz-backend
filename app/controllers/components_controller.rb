@@ -1,4 +1,12 @@
 class ComponentsController < ApplicationController
+  # Список компонентов публикации
+  #
+  # @example {include:file:../http/components/index.http}
+  def index
+    components = IndexComponents.run! params.permit(:post_id)
+    render json: ComponentSerializer.serialize(components)
+  end
+
   # Создаёт и возвращает новый компонент
   #
   # @example {include:file:../http/components/create.http}
