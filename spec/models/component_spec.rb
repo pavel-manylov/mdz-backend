@@ -39,13 +39,19 @@ RSpec.describe Component, type: :model do
   end
 
   describe '#value[=]' do
-    context 'with BooleanValue' do
-      it_behaves_like 'stored accessor', :value, -> { FactoryBot.create :boolean_value }
+    it_behaves_like 'stored accessor', :value, -> { FactoryBot.create :boolean_value }
+  end
+
+  describe '#representative_value' do
+    it 'returns actual value(s)' do
+      posts = create_list :post, 2
+      component.value = build(:relation_value, posts: posts)
+      expect(component.representative_value).to match_array posts
     end
   end
 
   example '#custom_fields returns all associated CustomField(s)' do
-    created_fields = 3.times.map{ create :custom_field, component: component }
+    created_fields = create_list :custom_field, 3, component: component
     expect(component.custom_fields).to match_array created_fields
   end
 

@@ -1,0 +1,14 @@
+### Создание компонента
+POST http://localhost:3000/posts/4/components
+Content-Type: application/json
+
+{
+  "public": true,
+  "display_class": "h1",
+  "order": 0,
+  "type": "string",
+  "value": "Someone Actually Won The Elections!",
+  "custom_fields": {
+    "mobile-class": "xLarge"
+  }
+}
