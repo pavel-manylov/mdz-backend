@@ -146,17 +146,4 @@ class CreateComponent < ActiveInteraction::Base
   end
 
   TYPE_TO_CAST_CLASS = { 'boolean' => CastBooleanValue, 'string' => CastStringValue, 'relation' => CastRelationValue }
-
-  # Получение публикации по идентификатору
-  #
-  # @api private
-  class GetPost < ActiveInteraction::Base
-    integer :post_id
-
-    def execute
-      post = Post.find_by_id post_id
-      errors.add(:post_id, I18n.t('interaction.errors.post_not_found')) unless post
-      post
-    end
-  end
 end
