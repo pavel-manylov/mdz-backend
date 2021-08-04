@@ -76,7 +76,7 @@ RSpec.describe PostsController, type: :controller do
     end
   end
 
-  describe 'PUT posts/:post_id' do
+  describe 'PUT /posts/:post_id' do
     subject(:update) { put :update, params: params }
     let(:params) do
       { id: post_id, name: post_name, seo_url: post_seo_url }
@@ -123,6 +123,37 @@ RSpec.describe PostsController, type: :controller do
 
     include_examples 'controller interaction errors', interaction_class: UpdatePost do
       subject(:perform) { update }
+    end
+
+  end
+
+  describe 'DELETE posts/:post_id' do
+    subject(:destroy) { delete :destroy, params: params }
+    let(:params) do
+      {
+        id: post_id,
+      }
+    end
+
+    let(:post_id) { 123 }
+
+    before do
+      allow(DeletePost).to receive(:run!).and_return true
+    end
+
+    it 'deletes post' do
+      destroy
+
+      expect(DeletePost).to have_received(:run!).with post_id: post_id.to_s
+    end
+
+    it 'returns success status' do
+      destroy
+      expect(response).to be_successful
+    end
+
+    include_examples 'controller interaction errors', interaction_class: DeletePost do
+      subject(:perform) { destroy }
     end
 
   end

@@ -27,6 +27,14 @@ class PostsController < ApplicationController
     render json: PostSerializer.serialize(post)
   end
 
+  # Удаляет указанную публикацию
+  #
+  # @example {include:file:../http/posts/delete.http}
+  def destroy
+    DeletePost.run! post_id: params[:id]
+    render json: {}
+  end
+
   private
 
   # @return [Hash]

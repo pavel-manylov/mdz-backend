@@ -101,6 +101,29 @@ paths:
           description: Внутренние ошибки
           content: { }
       x-codegen-request-body-name: body
+    delete:
+      tags:
+        - posts
+      summary: Удалить публикацию
+      operationId: deletePost
+      parameters:
+        - name: post_id
+          in: path
+          description: Идентификатор публикации
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Удаление завершено успешно
+          content: { }
+        422:
+          description: Невалидные данные
+          content: { }
+        500:
+          description: Внутренние ошибки
+          content: { }
+      x-codegen-request-body-name: body
   /posts/{post_id}/components:
     get:
       tags:
