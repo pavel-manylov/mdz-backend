@@ -7,6 +7,14 @@ class ComponentsController < ApplicationController
     render json: ComponentSerializer.serialize(components)
   end
 
+  # Сведения о компоненте
+  #
+  # @example {include:file:../http/components/get.http}
+  def show
+    component = GetComponent.run! component_id: params[:id]
+    render json: ComponentSerializer.serialize(component)
+  end
+
   # Создаёт и возвращает новый компонент
   #
   # @example {include:file:../http/components/create.http}

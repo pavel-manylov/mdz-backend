@@ -1,5 +1,11 @@
-# @api private
+# Получение компонента по идентификатору
 class GetComponent < ActiveInteraction::Base
+  # @!attribute component_id
+  #   Идентификатор компонента
+  #
+  #   @validation Обязателен для заполнения
+  #   @validation Соответствует существующему компоненту
+  #   @return [Integer]
   integer :component_id
 
   # @return [NilClass, Component]
