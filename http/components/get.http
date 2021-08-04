@@ -1,2 +1,2 @@
-### Создание компонента
+### Получение компонента
 GET http://localhost:3000/posts/4/components/4

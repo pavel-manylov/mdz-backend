@@ -76,4 +76,54 @@ RSpec.describe PostsController, type: :controller do
     end
   end
 
+  describe 'PUT posts/:post_id' do
+    subject(:update) { put :update, params: params }
+    let(:params) do
+      { id: post_id, name: post_name, seo_url: post_seo_url }
+    end
+
+    let(:post_name) { 'updated_post_name' }
+    let(:post_seo_url) { 'updated_post_seo_url' }
+
+    let(:post_id) { 123 }
+
+    let(:serialized_post) do
+      {
+        'id' => post_id,
+        'name' => post_name
+      }
+    end
+
+    let(:post_double) { double Post, id: post_id }
+
+    before do
+      allow(UpdatePost).to receive(:run!).and_return post_double
+      allow(PostSerializer).to receive(:serialize).with(post_double).and_return serialized_post
+    end
+
+    it 'updates post' do
+      update
+
+      expect(UpdatePost).to have_received(:run!).with(
+        'post_id' => post_id.to_s,
+        'seo_url' => post_seo_url,
+        'name' => post_name
+      )
+    end
+
+    it 'returns serialized post' do
+      update
+      expect(JSON.parse(response.body)).to eq serialized_post
+    end
+
+    it 'returns success status' do
+      update
+      expect(response).to be_successful
+    end
+
+    include_examples 'controller interaction errors', interaction_class: UpdatePost do
+      subject(:perform) { update }
+    end
+
+  end
 end
