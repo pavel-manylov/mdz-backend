@@ -25,3 +25,9 @@ docker-compose run --rm backend rspec
 ```bash
 docker-compose run --rm backend rake db:migrate 
 ```
+
+## API
+
+При запуске в режиме разработки через docker-compose API доступен на 3000 порту хостовой машины.
+
+Документация на API доступна в виде [Swagger-файла](swagger.yaml) и [примеров HTTP запросов](http).
