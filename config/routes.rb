@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
   resources :posts, only: %i(show create) do
-    resources :components, only: %i(index create update destroy)
+    resources :components, only: %i(index show create update destroy)
   end
 end

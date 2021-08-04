@@ -223,4 +223,42 @@ RSpec.describe ComponentsController, type: :controller do
 
   end
 
+  describe 'GET posts/:post_id/components/:id' do
+    subject(:show) { get :show, params: { post_id: post_id, id: component_id } }
+    let(:post_id) { 123 }
+
+    let(:component_id) { 111 }
+    let(:component_double){ double Component, post_id: post_id, id: component_id}
+
+    let(:serialized_component) do
+      { 'post_id' => post_id, 'id' => component_id }
+    end
+
+    before do
+      allow(GetComponent).to receive(:run!).and_return component_double
+      allow(ComponentSerializer).to receive(:serialize).with(component_double).and_return serialized_component
+    end
+
+    it 'searches for referenced component' do
+      show
+
+      expect(GetComponent).to have_received(:run!).with(
+        component_id: component_id.to_s
+      )
+    end
+
+    it 'returns serialized component' do
+      show
+      expect(JSON.parse(response.body)).to eq serialized_component
+    end
+
+    it 'returns success status' do
+      show
+      expect(response).to be_successful
+    end
+
+    include_examples 'controller interaction errors', interaction_class: GetComponent do
+      subject(:perform) { show }
+    end
+  end
 end

@@ -131,6 +131,38 @@ paths:
           content: { }
       x-codegen-request-body-name: body
   /posts/{post_id}/components/{component_id}:
+    get:
+      tags:
+        - components
+      summary: Сведения о компоненте
+      operationId: getComponent
+      parameters:
+        - name: post_id
+          in: path
+          description: Идентификатор публикации
+          required: true
+          schema:
+            type: integer
+        - name: component_id
+          in: path
+          description: Идентификатор компонента
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Сведения о компоненте
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Component'
+        422:
+          description: Невалидные данные
+          content: { }
+        500:
+          description: Внутренние ошибки
+          content: { }
+      x-codegen-request-body-name: body
     put:
       tags:
         - components
