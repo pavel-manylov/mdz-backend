@@ -1,4 +1,12 @@
 class PostsController < ApplicationController
+  # Список всех публикаций
+  #
+  # @example {include:file:../http/posts/index.http}
+  def index
+    posts = IndexPosts.run!
+    render json: PostSerializer.serialize(posts)
+  end
+
   # Возвращает публикацию по идентификатору
   #
   # @example {include:file:../http/posts/get.http}
