@@ -1,4 +1,4 @@
-### Создание компонента
+### Обновление компонента
 PUT http://localhost:3000/posts/4/components/2
 Content-Type: application/json
 

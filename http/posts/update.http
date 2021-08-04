@@ -1,0 +1,8 @@
+### Обновление публикации
+PUT http://localhost:3000/posts/4
+Content-Type: application/json
+
+{
+  "name": "Elections have been stolen",
+  "seo_url": "stolen-elections"
+}

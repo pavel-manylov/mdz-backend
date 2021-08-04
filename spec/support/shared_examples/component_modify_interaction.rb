@@ -14,8 +14,6 @@ shared_examples_for 'component modify interaction' do
   let(:component_order) { 55 }
 
   describe '.run' do
-
-
     context 'modified component' do
       subject(:modified_component) { outcome.result.reload }
 
