@@ -6,8 +6,11 @@ services:
     command: ${COMMAND:-tail -f /dev/null}
     depends_on:
       - db
+    ports:
+      - "3000:3000"
     volumes:
       - .:/app
+      - ./config/database.docker.yml:/app/config/database.yml
   db:
     image: postgres:13.3
     restart: always
