@@ -141,11 +141,6 @@ shared_examples_for 'component modify interaction' do
       end
 
       it_behaves_like 'invalid', :custom_fields, validate: false
-
-      example 'bla bla' do
-        outcome
-        puts 'something'
-      end
     end
 
     context 'without value for custom field' do
