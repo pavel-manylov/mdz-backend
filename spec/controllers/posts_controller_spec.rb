@@ -1,6 +1,49 @@
 require 'rails_helper'
 
 RSpec.describe PostsController, type: :controller do
+  describe 'GET posts' do
+    subject(:index) { get :index }
+
+    let(:posts_double) do
+      [
+        double(Post, id: 1),
+        double(Post, id: 2)
+      ]
+    end
+
+    let(:serialized_posts) do
+      [
+        { 'id' => 1 },
+        { 'id' => 2 }
+      ]
+    end
+
+    before do
+      allow(IndexPosts).to receive(:run!).and_return posts_double
+      allow(PostSerializer).to receive(:serialize).with(posts_double).and_return serialized_posts
+    end
+
+    it 'indexes posts' do
+      index
+
+      expect(IndexPosts).to have_received(:run!)
+    end
+
+    it 'returns serialized posts' do
+      index
+      expect(JSON.parse(response.body)).to eq serialized_posts
+    end
+
+    it 'returns success status' do
+      index
+      expect(response).to be_successful
+    end
+
+    include_examples 'controller interaction errors', interaction_class: IndexPosts do
+      subject(:perform) { index }
+    end
+  end
+  
   describe "POST /posts" do
     subject(:create) { post :create, params: params }
 

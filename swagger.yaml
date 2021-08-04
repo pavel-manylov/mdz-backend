@@ -14,6 +14,27 @@ tags:
     description: Компоненты
 paths:
   /posts:
+    get:
+      tags:
+        - posts
+      summary: Получить все публикации
+      operationId: indexPosts
+      responses:
+        200:
+          description: Список публикаций
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        422:
+          description: Невалидные данные
+          content: { }
+        500:
+          description: Внутренние ошибки
+          content: { }
+      x-codegen-request-body-name: body
     post:
       tags:
         - posts
