@@ -17,7 +17,7 @@ class ApplicationController < ActionController::API
   # @param  [Array<String>] error_messages
   # @param  [Integer] status_code
   def exception(error, error_messages = [I18n.t('controller.errors.exception')], status_code = 500)
-    Rails.logger.error "Error #{error.message} ({error.class}). Backtrace: \n#{error.backtrace.join("\n")}"
+    Rails.logger.error "Error #{error.message} (#{error.class}). Backtrace: \n#{error.backtrace.join("\n")}"
     render json: { errors: error_messages },
            status: status_code
   end

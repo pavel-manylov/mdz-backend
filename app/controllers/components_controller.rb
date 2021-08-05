@@ -48,7 +48,7 @@ class ComponentsController < ApplicationController
   def component_params
     result = params.permit(:post_id, :public, :display_class,
                            :order, :type, custom_fields: {}).to_h
-    result[:value] = params[:value]
+    result[:value] = params.to_unsafe_h[:value]
     result
   end
 end
