@@ -53,7 +53,7 @@ shared_examples_for 'component modify interaction' do
         context 'with passed relation value' do
           let(:component_type) { 'relation' }
           let(:component_value) do
-            posts.map { |post| { 'id' => post.id } }
+            posts.map { |post| { 'post_id' => post.id } }
           end
           let(:posts) { create_list :post, 3 }
 

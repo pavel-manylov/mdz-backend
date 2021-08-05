@@ -4,7 +4,7 @@
 class CastRelationValue < ActiveInteraction::Base
   array :value do
     hash do
-      integer :id
+      integer :post_id #
     end
   end
 
@@ -20,7 +20,7 @@ class CastRelationValue < ActiveInteraction::Base
   private
 
   def ids
-    @references_ids ||= value.map { |post_reference| post_reference['id'] }.compact
+    @references_ids ||= value.map { |post_reference| post_reference['post_id'] }.compact
   end
 
   def posts
