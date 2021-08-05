@@ -142,8 +142,8 @@ RSpec.describe ComponentsController, type: :controller do
     let(:component_custom_fields) do
       { 'as-preview' => 'no' }
     end
-    let(:component_type) { 'boolean' }
-    let(:component_value) { true }
+    let(:component_type) { 'relation' }
+    let(:component_value) { [{ 'post_id' => 123 }] }
 
     let(:serialized_component) do
       {
@@ -170,7 +170,7 @@ RSpec.describe ComponentsController, type: :controller do
         'order' => component_order.to_s,
         'custom_fields' => component_custom_fields,
         'type' => component_type,
-        'value' => 'true'
+        'value' => [{ 'post_id' => "123" }]
       )
     end
 
@@ -228,7 +228,7 @@ RSpec.describe ComponentsController, type: :controller do
     let(:post_id) { 123 }
 
     let(:component_id) { 111 }
-    let(:component_double){ double Component, post_id: post_id, id: component_id}
+    let(:component_double) { double Component, post_id: post_id, id: component_id }
 
     let(:serialized_component) do
       { 'post_id' => post_id, 'id' => component_id }
